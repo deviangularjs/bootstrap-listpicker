@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr-x-mtfrom-en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <!-- Core CSS -->
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+        
+        <!-- Plugin CSS -->
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-listpicker.css" />
+        
+        <!-- Core SCRIPTS -->
+        <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        
+        <!-- Plugin SCRIPTS -->
+        <script type="text/javascript" src="js/jquery.input-clear.js"></script>
+        <script type="text/javascript" src="js/bootstrap-listpicker.js"></script>
+
+        <!-- Custom SCRIPTS -->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(".myList").listpicker();
+            });
+        </script>
+    </head>
+    <body>
+        <form>
+            <select class="myList">
+                <option data-filters="A" value="1">option 1</option>
+                <option data-filters="B" value="2">option 2</option>
+                <option data-filters="C" value="3">option 3</option>
+                <option data-filters="A,C" value="4">option 4</option>
+            </select>
+        </form>
+    </body>
+</html>
