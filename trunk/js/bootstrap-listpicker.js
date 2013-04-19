@@ -217,8 +217,8 @@ THE SOFTWARE.
             }, 100);
         });                
 
-        if ($.fn.clearable) {
-            $(".searchbox", $container).clearable();
+        if ($.fn.inputClear) {
+            $(".searchbox", $container).inputClear();
         }
 
         $(".filter-tabs a[href='#all']", $container).tab("show");
