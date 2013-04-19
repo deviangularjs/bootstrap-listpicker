@@ -3,20 +3,34 @@
     <ModulePrefs title="Bootstrap list picker Online Demo" />
     <Content type="html">
     <![CDATA[
-        <link rel="stylesheet" type="text/css" href="http://bootstrap-listpicker.googlecode.com/svn/trunk/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="http://bootstrap-listpicker.googlecode.com/svn/trunk/css/bootstrap-listpicker.css" />
-        
         <script type="text/javascript" src="http://bootstrap-listpicker.googlecode.com/svn/trunk/js/jquery-1.8.2.min.js"></script>
         <script type="text/javascript" src="http://bootstrap-listpicker.googlecode.com/svn/trunk/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://bootstrap-listpicker.googlecode.com/svn/trunk/js/jquery.input-clear.js"></script>
         <script type="text/javascript" src="http://bootstrap-listpicker.googlecode.com/svn/trunk/js/bootstrap-listpicker.min.js"></script>
 
         <script type="text/javascript">
+            function getStyleSheets() {
+                var params = {};  
+                params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.TEXT;  
+                var url = "http://bootstrap-listpicker.googlecode.com/svn/trunk/css/bootstrap.min.css";
+                gadgets.io.makeRequest(url, appendStyleSheet, params);                
+                var url = "http://bootstrap-listpicker.googlecode.com/svn/trunk/css/bootstrap-listpicker.css";
+                gadgets.io.makeRequest(url, appendStyleSheet, params);
+            };
+            
+            function appendStyleSheet(stylesheet) {
+                $("#myStyleSheets").append(stylesheet.text);
+            }
+            
+            gadgets.util.registerOnLoadHandler(getStyleSheets);            
+            
             $(document).ready(function() {
                 $("select[multiple='multiple']").listpicker();
             });
         </script>
-        
+
+        <style id="myStyleSheets" type="txt/css"></style>
+                        
         <form method="post">
             <select multiple="multiple" name="data[model][field][]">
                 <option data-tabs="A" value="1">option 1</option>
