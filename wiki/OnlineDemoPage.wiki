@@ -28,3 +28,4 @@
 <wiki:gadget url="http://bootstrap-listpicker.googlecode.com/svn/wiki/gadget.xml" up_projectName="bootstrap-listpicker" width="640" height="440" />
 
 *Note:* Icons from glyphicons are not displayed (such as the small delete button on the right of the search field, etc.). I just can't figure how to make gadgets and glyphicons together :)
+However, it is fully functionnal (even if invisible).
