@@ -1,3 +1,1 @@
-= Online Demo =
-
-<wiki:gadget url="http://bootstrap-listpicker.googlecode.com/svn/wiki/gadget.xml" up_projectName="support" />
+<wiki:gadget url="http://bootstrap-listpicker.googlecode.com/svn/wiki/gadget.xml" up_projectName="bootstrap-listpicker" />
