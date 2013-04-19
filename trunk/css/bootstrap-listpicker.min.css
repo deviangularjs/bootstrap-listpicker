@@ -26,43 +26,4 @@
  * not be used in advertising or otherwise to promote the sale, use or other 
  * dealings in this Software without prior written authorization from the 
  * copyright holders.
- */
-
-.modal-backdrop-white .modal-backdrop {
-    background-color: #ffffff;
-}
-
-.listpicker .modal {
-    background: none;
-    border: none;
-    box-shadow: none;
-    top:50%;
-    margin-top: -20px;
-    text-align: center;               
-}
-.listpicker .modal i{
-    font-size: 30px;
-}
-
-.listpicker .modal p{
-    display: inline-block;
-    line-height: 30px;
-    vertical-align: middle;
-}
-
-.listpicker label.disabled{
-    color: #888888;
-}
-
-.listpicker .searchbox{
-    margin: -1px 0 3px 0;
-    border-radius: 0 0 4px 4px;
-}   
-
-.listpicker .source-selectbox, .listpicker .target-selectbox{                
-    height:10.7em; 
-    overflow:auto;
-    border:solid 1px #dddddd;
-    overflow-y: scroll; 
-    padding-left:5px;
-}
+ */.modal-backdrop-white .modal-backdrop{background-color:#fff}.listpicker .modal{background:0;border:0;box-shadow:none;top:50%;margin-top:-20px;text-align:center}.listpicker .modal i{font-size:30px}.listpicker .modal p{display:inline-block;line-height:30px;vertical-align:middle}.listpicker label.disabled{color:#888}.listpicker .searchbox{margin:-1px 0 3px;border-radius:0 0 4px 4px}.listpicker .source-selectbox,.listpicker .target-selectbox{height:10.7em;overflow:auto;border:solid 1px #ddd;overflow-y:scroll;padding-left:5px}
