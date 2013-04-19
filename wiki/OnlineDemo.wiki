@@ -16,7 +16,7 @@ However, it is fully functionnal (even if invisible).
     <script type="text/javascript" src="js/bootstrap-listpicker.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $(".myList").listpicker();
+            $('select[multiple="multiple"]').listpicker();
         });
     </script>
 
