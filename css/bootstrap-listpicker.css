@@ -20,6 +20,10 @@
     vertical-align: middle;
 }
 
+.listpicker label.disabled{
+    color: #888888;
+}
+
 .listpicker .searchbox{
     margin: -1px 0 3px 0;
     border-radius: 0 0 4px 4px;

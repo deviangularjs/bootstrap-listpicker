@@ -52,7 +52,7 @@
         if (checkbox.is(":checked")) {            
             dest = src.siblings(".target-selectbox");
             dest.append(label);
-            if (src.children(":visible").size() <= 0) {
+            if (src.children(":visible:not(.disabled)").size() <= 0) {
                 $(".check-all", src.parent()).prop("checked", true);
             }
         } else { 
@@ -69,7 +69,7 @@
             if (dest.data("sort")) {
                 sortSelectbox(dest);
             }
-            if (dest.children(":visible").size() > 0) {
+            if (dest.children(":visible:not(.disabled)").size() > 0) {
                 $(".check-all", src.parent()).prop("checked", false);
             }
         }
@@ -118,7 +118,7 @@
     function performCheckallOnClickAction(checkbox, glasspane) {
         var listpicker = checkbox.parent().parent();
         if (checkbox.is(":checked")) {
-            $(".source-selectbox label:visible input", listpicker).each(function () {
+            $(".source-selectbox label:visible:not(.disabled) input", listpicker).each(function () {
                 $(this).prop("checked", true);
                 $(this).parent().remove();
                 $(this).click(function () {
@@ -166,22 +166,30 @@
         $container.attr('id', $select.attr("id"));
 
         var $tabs = new Array();
+        var $allSelected = true;
         $select.children().each($.proxy(function (index, element) {
-            // TODO take in account checked and disabled attributes
             var label = ($(element).attr('label') !== undefined) ? $(element).attr('label') : $(element).text();
             var value = $(element).val();
+            var disabled = $(element).prop('disabled');
+            var selected = $(element).prop('selected');
+            $allSelected = $allSelected && selected;
             if ($(element).data('tabs')) {
                 $.each($(element).data('tabs').split(','), function(i, el){
                     if($.inArray(el, $tabs) === -1) $tabs.push(el);
                 });            
             }
             var li = $(
-                '<label class="checkbox" data-tabs="' + $(element).data('tabs') + '">'
-                    + '<input type="checkbox" value="' + value + '" name="' + $name +'" />' 
+                '<label class="checkbox' + (disabled ? ' disabled' : '') + '" data-tabs="' + $(element).data('tabs') + '">'
+                    + '<input type="checkbox" value="' + value 
+                        + '" name="' + $name +'" ' 
+                        + (disabled ? 'disabled="disabled" ' : ' ')
+                        + (selected ? 'checked="checked" ' : ' ')
+                        + '/>' 
                     + label 
-                + '</label>');            
-            $('.source-selectbox' , $container).append(li);            
+                + '</label>');  
+            $((selected ? '.target-selectbox' : '.source-selectbox'), $container).append(li);                        
         }, this));
+        $(".check-all", $container).prop("checked", $allSelected);
         
         $.each($tabs, function(i, el) {
             $(".filter-tabs", $container).append('<li><a href="#' + el + '" data-toggle="tab">' + el + '</a></li>');
@@ -201,6 +209,10 @@
         });        
 
         $(".source-selectbox label input", $container).click(function(){
+            performInputOnClickAction($(this), $glasspane);            
+        });
+        
+        $(".target-selectbox label input", $container).click(function(){
             performInputOnClickAction($(this), $glasspane);            
         });
 
