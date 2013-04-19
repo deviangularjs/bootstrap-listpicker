@@ -1,27 +1,32 @@
 /**
-Bootstrap list picker
-Dual licensed under the MIT or GPL Version 2 licenses.
-
-Copyright (c) 2013 Christophe Cassagnabere
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-*/
+ * Bootstrap list picker
+ * Licensed under the MIT license.
+ * 
+ * Copyright (c) 2013, Christophe Cassagnabere
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy 
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+ * copies of the Software, and to permit persons to whom the Software is 
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in 
+ * all copies or substantial portions of the Software.
+ * 
+ * The Software is provided "as is", without warranty of any kind, express or 
+ * implied, including but not limited to the warranties of merchantability, 
+ * fitness for a particular purpose and noninfringement. In no event shall the 
+ * authors or copyright holders X be liable for any claim, damages or other 
+ * liability, whether in an action of contract, tort or otherwise, arising from, 
+ * out of or in connection with the software or the use or other dealings in 
+ * the Software.
+ * 
+ * Except as contained in this notice, the name of the copyright holders shall 
+ * not be used in advertising or otherwise to promote the sale, use or other 
+ * dealings in this Software without prior written authorization from the 
+ * copyright holders.
+ */
     
 !function ($) {
     "use strict";
@@ -54,14 +59,14 @@ THE SOFTWARE.
             var $value = $(".searchbox", src.parent()).val();
             var $filter = $(".filter-tabs li.active a", src.parent()).attr("href").replace('#', '');
              if (label.text().toLowerCase().indexOf($value.toLowerCase()) >= 0
-                        && ($filter == "all" || label.attr("data-filters").indexOf($filter) >= 0)) {
+                        && ($filter == "all" || label.data("filters").indexOf($filter) >= 0)) {
                  label.show();
              } else {
                  label.hide();
              }
             dest = src.siblings(".source-selectbox");           
             dest.append(label);   
-            if (dest.prop("data-sort")) {
+            if (dest.data("sort")) {
                 sortSelectbox(dest);
             }
             if (dest.children(":visible").size() > 0) {
@@ -74,13 +79,13 @@ THE SOFTWARE.
     }
     
     function performSearchAction (listpicker, value, glasspane) {        
-        var $filter = $(".filter-tabs li.active a", listpicker).attr("href").replace('#', '');
-        var count = 0;
+        var $activeTab = $(".filter-tabs li.active a", listpicker).attr("href").replace('#', '');
+        var $displayedInSource = 0;
         if (value.length <= 0) {
             $(".source-selectbox label", listpicker).each(function () {
-                if ($filter == "all" || $(this).attr("data-filters").indexOf($filter) >= 0) {
+                if ($activeTab == "all" || $(this).data("tabs").indexOf($activeTab) >= 0) {
                     $(this).show();
-                    count ++;
+                    $displayedInSource ++;
                 } else {
                     $(this).hide();
                 }
@@ -88,15 +93,16 @@ THE SOFTWARE.
         } else if (value.length > 3) {
             $(".source-selectbox label", listpicker).each(function () {
                 if ($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0
-                        && ($filter == "all" || $(this).attr("data-filters").indexOf($filter) >= 0)) {
+                        && ($activeTab == "all" || $(this).data("tabs").indexOf($activeTab) >= 0)) {
                     $(this).show();
-                    count ++;
+                    $displayedInSource ++;
                 } else {
                     $(this).hide();
                 }                        
             });               
         }
-        $(".check-all", listpicker).prop("checked", count == 0 && $(".target-selectbox label", listpicker).size() > 0);            
+        $(".check-all", listpicker).prop("checked", 
+            $displayedInSource == 0 && $(".target-selectbox label", listpicker).size() > 0);            
         if (glasspane) {
             glasspane.modal('hide');
         }
@@ -137,7 +143,7 @@ THE SOFTWARE.
                     }
                 }
             });
-            if ($(".source-selectbox", listpicker).prop("data-sort")) {
+            if ($(".source-selectbox", listpicker).data("sort")) {
                 sortSelectbox($(".source-selectbox", listpicker));
             }
         } 
@@ -148,7 +154,8 @@ THE SOFTWARE.
     
     function ListPicker(listpicker, options) {
         this.options = this.getOptions(options);
-        var $select = $(listpicker);         
+        var $select = $(listpicker);        
+        var $name = $select.attr("name");
         var $container = $(this.options.listpickerContainer)
             .append('<div class="modal hide worker" data-keyboard="false" data-backdrop="static"><i class="icon-cogs"></i><p>&nbsp;Please wait...</p></div>')
             .append('<ul class="nav nav-tabs filter-tabs"><li><a href="#all" data-toggle="tab">All</a></li></ul>')
@@ -156,32 +163,35 @@ THE SOFTWARE.
             .append('<div class="source-selectbox" />')
             .append('<input class="searchbox input-block-level" type="text" placeholder="Search...">')
             .append('<div class="target-selectbox" />');
+        $container.attr('id', $select.attr("id"));
 
-        var $filtertabs = new Array();
+        var $tabs = new Array();
         $select.children().each($.proxy(function (index, element) {
             // TODO take in account checked and disabled attributes
             var label = ($(element).attr('label') !== undefined) ? $(element).attr('label') : $(element).text();
             var value = $(element).val();
-            $.each($(element).attr('data-filters').split(','), function(i, el){
-                if($.inArray(el, $filtertabs) === -1) $filtertabs.push(el);
-            });            
-            var li = $('<label class="checkbox" data-filters="' 
-                + $(element).attr('data-filters') 
-                + '"><input type="checkbox" value="' 
-                + value + '" />' + label + '</label>');            
+            if ($(element).data('tabs')) {
+                $.each($(element).data('tabs').split(','), function(i, el){
+                    if($.inArray(el, $tabs) === -1) $tabs.push(el);
+                });            
+            }
+            var li = $(
+                '<label class="checkbox" data-tabs="' + $(element).data('tabs') + '">'
+                    + '<input type="checkbox" value="' + value + '" name="' + $name +'" />' 
+                    + label 
+                + '</label>');            
             $('.source-selectbox' , $container).append(li);            
         }, this));
         
-        $.each($filtertabs, function(i, el) {
+        $.each($tabs, function(i, el) {
             $(".filter-tabs", $container).append('<li><a href="#' + el + '" data-toggle="tab">' + el + '</a></li>');
         });
         
-        if ($select.attr('data-sort') !== undefined) {
-            $(".source-selectbox", $container).prop('data-sort', 
-                $select.attr('data-sort') != "false" && $select.attr('data-sort') != "0");            
+        if ($select.data('sort') !== undefined) {
+            $(".source-selectbox", $container).data('sort', 
+                $select.data('sort') != "false" && $select.data('sort') != "0");            
         } else {
-            $(".source-selectbox", $container).prop(
-                'data-sort', this.options.sort);
+            $(".source-selectbox", $container).data('sort', this.options.sort);
         }
         
         var $glasspane = $(".worker", $container);
@@ -194,13 +204,14 @@ THE SOFTWARE.
             performInputOnClickAction($(this), $glasspane);            
         });
 
+        var $delay = this.options.delay;
         $(".searchbox", $container).keyup(function() {
             var value = $(this).val();
             clearTimeout($glasspane.attr("pid"));
             if (value.length <= 0 || value.length > 3) {                            
                 $glasspane.attr("pid", setTimeout(function() {
                     SearchboxOnKeyupEvent($container, value, $glasspane)
-                }, 700));
+                }, $delay));
             }
         });
 
@@ -227,12 +238,13 @@ THE SOFTWARE.
             $(".searchbox", $container).trigger("clear");
         });
                  
-        $select.after($container).remove();
+        $select.after($container).remove();        
     }
 
     ListPicker.prototype = {
             defaults: {
                 sort: false,
+                delay: 700,
                 listpickerContainer :'<div class="listpicker" />',
                 sourceContainer: '<div class="source-selectbox">'
             },
