@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
     <ModulePrefs title="Bootstrap list picker Online Demo" />
-    <Content type="html" preferred_width="640" preferred_height="440" >
+    <Content type="html" preferred_width="640" preferred_height="420" >
     <![CDATA[
         <script type="text/javascript" src="http://bootstrap-listpicker.googlecode.com/svn/trunk/js/jquery-1.8.2.min.js"></script>
         <script type="text/javascript" src="http://bootstrap-listpicker.googlecode.com/svn/trunk/js/bootstrap.min.js"></script>
