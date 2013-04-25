@@ -90,7 +90,7 @@
                     $(this).hide();
                 }
             });      
-        } else if (value.length > 3) {
+        } else {
             $(".source-selectbox label", listpicker).each(function () {
                 if ($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0
                         && ($activeTab == "all" || $(this).data("tabs").indexOf($activeTab) >= 0)) {
@@ -135,12 +135,10 @@
                 });
                 $(".source-selectbox", listpicker).append($(this).parent());                            
                 var searchString = $(".searchbox", listpicker).val();
-                if (searchString.length > 3) {
-                    if ($(this).parent().text().toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
-                        $(this).parent().show();
-                    } else {
-                        $(this).parent().hide();
-                    }
+                if ($(this).parent().text().toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
+                    $(this).parent().show();
+                } else {
+                    $(this).parent().hide();
                 }
             });
             if ($(".source-selectbox", listpicker).data("sort")) {
@@ -220,11 +218,9 @@
         $(".searchbox", $container).keyup(function() {
             var value = $(this).val();
             clearTimeout($glasspane.attr("pid"));
-            if (value.length <= 0 || value.length > 3) {                            
-                $glasspane.attr("pid", setTimeout(function() {
-                    SearchboxOnKeyupEvent($container, value, $glasspane)
-                }, $delay));
-            }
+            $glasspane.attr("pid", setTimeout(function() {
+                SearchboxOnKeyupEvent($container, value, $glasspane)
+            }, $delay));
         });
 
         $(".searchbox", $container).on('clear', function() {
@@ -263,7 +259,6 @@
 
             constructor: ListPicker,
 
-            // Get options by merging defaults and given options.
             getOptions: function(options) {
                     return $.extend({}, this.defaults, options);
             }
@@ -273,16 +268,12 @@
         return this.each(function () {
             var data = $(this).data('listpicker');
             var options = typeof option == 'object' && option;
-
-            // Initialize the listpicker.
             if (!data) {
                 $(this).data(
                     'listpicker', 
                     (data = new ListPicker($(this), options))
                 );
             }
-
-            // Call listpicker method.
             if (typeof option == 'string') {
                 data[option](parameter);
             }
