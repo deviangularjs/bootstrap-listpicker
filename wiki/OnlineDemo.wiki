@@ -1,5 +1,5 @@
 =Example=
-<wiki:gadget url="http://bootstrap-listpicker.googlecode.com/svn/wiki/gadget.xml" up_projectName="bootstrap-listpicker" width="640" height="440" />
+<wiki:gadget url="http://bootstrap-listpicker.googlecode.com/svn/wiki/gadget.xml" up_projectName="bootstrap-listpicker" width="640" height="420" />
 
 =Code=
 {{{
